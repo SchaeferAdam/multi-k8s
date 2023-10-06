@@ -1,13 +1,16 @@
-docker build -t adamschaefer/multi-client:latest -t adamschaefer/multi-client:$SHA -f ./client/Dockerfile ./client
-docker build -t adamschaefer/multi-server:latest -t adamschaefer/multi-server:$SHA -f ./server/Dockerfile ./server
-docker build -t adamschaefer/multi-worker:latest -t adamschaefer/multi-worker:$SHA -f ./worker/Dockerfile ./worker
-docker push adamschaefer/multi-client:latest
-docker push adamschaefer/multi-server:latest
-docker push adamschaefer/multi-worker:latest
-docker push adamschaefer/multi-client:$SHA
-docker push adamschaefer/multi-server:$SHA
-docker push adamschaefer/multi-worker:$SHA
+docker build -t adamschaefer/multi-client-k8s:latest -t adamschaefer/multi-client-k8s:$SHA -f ./client/Dockerfile ./client
+docker build -t adamschaefer/multi-server-k8s:latest -t adamschaefer/multi-server-k8s:$SHA -f ./server/Dockerfile ./server
+docker build -t adamschaefer/multi-worker-k8s:latest -t adamschaefer/multi-worker-k8s:$SHA -f ./worker/Dockerfile ./worker
+
+docker push adamschaefer/multi-client-k8s:latest
+docker push adamschaefer/multi-server-k8s:latest
+docker push adamschaefer/multi-worker-k8s:latest
+
+docker push adamschaefer/multi-client-k8s:$SHA
+docker push adamschaefer/multi-server-k8s:$SHA
+docker push adamschaefer/multi-worker-k8s:$SHA
+
 kubectl apply -f k8s
-kubectl set image deployments/server-deploymet server=adamschaefer/multi-server:$SHA
-kubectl set image deployments/client-deploymet client=adamschaefer/multi-client:$SHA
-kubectl set image deployments/worker-deploymet worker=adamschaefer/multi-worker:$SHA
+kubectl set image deployments/server-deployment server=adamschaefer/multi-server-k8s:$SHA
+kubectl set image deployments/client-deployment client=adamschaefer/multi-client-k8s:$SHA
+kubectl set image deployments/worker-deployment worker=adamschaefer/multi-worker-k8s:$SHA
